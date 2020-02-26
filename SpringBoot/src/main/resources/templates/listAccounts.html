@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Account</title>
+</head>
+<body>
+
+<h2>Accounts</h2>
+
+<div th:each="acc : ${allAccounts}">
+	
+	<p>
+		Id: <span th:text="${acc.id}"></span>
+		Name: <span th:text="${acc.name}"></span>
+		Balance: <span th:text="${acc.balance}"></span>
+		
+	</p>	
+	
+</div>
+
+</body>
+</html>

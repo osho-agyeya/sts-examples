@@ -1,0 +1,65 @@
+/*
+ * COPYRIGHT. HSBC HOLDINGS PLC 2019. ALL RIGHTS RESERVED.
+ *
+ * This software is only to be used for the purpose for which it has been
+ * provided. No part of it is to be reproduced, disassembled, transmitted,
+ * stored in a retrieval system nor translated in any human or computer
+ * language in any way or for any other purposes whatsoever without the prior
+ * written consent of HSBC Holdings plc.
+ */
+package com.demo;
+
+/**
+ * <p>
+ * <b> TODO : Insert description of the class's responsibility/role. </b>
+ * </p>
+ */
+public class ExceptionDemo {
+
+    public static void main(final String[] args) {// can call only static
+                                                  // methods
+
+        if (args.length == 2) {
+
+            System.out.println("arg0=" + args[0]);
+            System.out.println("arg1=" + args[1]);// space acting as delimiter
+
+            try {
+
+                int num = Integer.parseInt(args[0]);
+                int den = Integer.parseInt(args[1]);
+
+                int result = divide(num, den);
+
+                System.out.println(result);
+
+            } catch (NumberFormatException e) {
+                // TODO: handle exception
+                System.out.println("Invalid input args");
+            } catch (DivideException e) { // TODO: handle exception
+                System.out.println("Division exception=" + e.getMessage());
+            } finally {
+                System.out.println("Finally");
+            }
+            System.out.println("Try catch finally over");
+
+
+        }
+
+        System.out.println("App over");
+
+
+    }
+
+    private static int divide(final int x, final int y) throws DivideException {// this
+                                                                                // is
+                                                                                // necessary
+        if (y != 0) {
+            return x / y;
+        } else {
+            throw new DivideException("The denominator is 0");
+        }
+
+    }
+
+}

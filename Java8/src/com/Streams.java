@@ -1,0 +1,76 @@
+package com;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+public class Streams {
+
+    private static List<Player> players = new ArrayList<>();
+
+    static {
+        Streams.players.add(new Player("Virat", "Batsman", 9000, 1, Optional.of("RCB"), LocalDate.of(2007, 01, 20)));
+        Streams.players.add(new Player("HUE1", "Allrounder", 7800, 6, Optional.empty(), LocalDate.of(2009, 6, 19)));
+        Streams.players.add(new Player("HUE2", "Bowling", 780, 16, Optional.of("RCB"), LocalDate.of(2004, 12, 01)));
+        Streams.players.add(new Player("HUE3", "Batsman", 7000, 6, Optional.empty(), LocalDate.of(2019, 3, 9)));
+
+    }
+
+    public static void main(final String[] args) {
+
+
+        filterPlayers();
+        mapPlayers();
+        aggregates();
+        flatmap();
+        reduce();
+
+    }
+
+    private static void reduce() {
+
+        int sum = Streams.players.stream().map(p -> p.getTotalWickets()).collect(Collectors.toList()).stream().reduce(0,
+            (element1, element2) -> element1 + element2);
+        System.out.println("Total Sum: " + sum);
+
+    }
+
+    private static void flatmap() {
+
+        Streams.players.stream().flatMap(p -> Stream.of(p.getName().charAt(2))).forEach(System.out::println);
+
+    }
+
+
+    private static void aggregates() {
+        //long count = Streams.players.stream().filter(p -> p.getRole().equals("Batsman")).count();
+
+        Set<String> names = Streams.players.stream().filter(p -> p.getDebutDate().isAfter(LocalDate.of(2007, 1, 1)))
+            .map(p -> p.getName()).collect(Collectors.toSet());
+        names.forEach(System.out::println);
+
+    }
+
+
+    private static void mapPlayers() { // TO-DO-2
+        Set<String> names = Streams.players.stream().map(player -> player.getName()).collect(Collectors.toSet());
+        names.forEach(System.out::println);
+
+    }
+
+    private static void filterPlayers() {
+
+        // filter is intermidiate operation; forEach is the terminal operation
+        Stream<Player> stream = Streams.players.stream().filter(player -> player.getRole().equals("Batsman"));
+
+        Streams.players.add(new Player("test", "Batsman", 1000, 10, Optional.empty(), LocalDate.now()));
+
+        stream.forEach(player -> player.print());
+
+    }
+
+}

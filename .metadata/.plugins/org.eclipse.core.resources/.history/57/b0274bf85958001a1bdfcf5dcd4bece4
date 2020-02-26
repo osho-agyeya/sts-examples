@@ -1,0 +1,207 @@
+/*
+ * COPYRIGHT. HSBC HOLDINGS PLC 2019. ALL RIGHTS RESERVED.
+ *
+ * This software is only to be used for the purpose for which it has been
+ * provided. No part of it is to be reproduced, disassembled, transmitted,
+ * stored in a retrieval system nor translated in any human or computer
+ * language in any way or for any other purposes whatsoever without the prior
+ * written consent of HSBC Holdings plc.
+ */
+package com.app;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+
+public class AccountsCRUD {
+
+    private static final String DB_url = "jdbc:derby://localhost:1527/TrainingDB";
+
+    public static void main(final String[] args) {
+
+        //queryAllAccounts();
+         //createAccount();
+        // createAccountWithStatement();
+        // updateAccountBalance();
+        // deleteAccountById();
+        //transferFunds(2, 1, 2);
+    }
+
+    private static void transferFunds(final int fromId, final int toId, final double amount) {
+        try (Connection conn = DriverManager.getConnection(AccountsCRUD.DB_url)) {
+
+            conn.setAutoCommit(false);
+
+            String withdrawSQL = "update accounts set balance=balance-? where id=? and balance>?";
+            String depositSQL = "update accounts set balance=balance+? where id=?";
+
+            PreparedStatement preparedStatementWithdraw = conn.prepareStatement(withdrawSQL);
+            preparedStatementWithdraw.setDouble(1, amount);
+            preparedStatementWithdraw.setInt(2, fromId);
+            preparedStatementWithdraw.setDouble(3, amount);
+
+            PreparedStatement preparedStatementDeposit = conn.prepareStatement(depositSQL);
+            preparedStatementDeposit.setDouble(1, amount);
+            preparedStatementDeposit.setInt(2, toId);
+
+            int withdrawRowsAffected, depositRowsAffected;
+            withdrawRowsAffected = preparedStatementWithdraw.executeUpdate();
+            depositRowsAffected = preparedStatementDeposit.executeUpdate();
+
+            if (withdrawRowsAffected == 1 && depositRowsAffected == 1) {
+                System.out.println("Transfer successful from " + fromId + " to " + toId);
+                conn.commit();
+            } else {
+                conn.rollback();
+                System.out.println("Transfer failed");
+                if (withdrawRowsAffected == 1) {
+                    System.out.println("Issue with credit account " + toId + ". It does not exist");
+                } else if (depositRowsAffected == 1) {
+                    System.out
+                        .println("Issue with debit account " + fromId + ". It does not exist or does not have sufficient balance");
+                } else {
+                    System.out.println("Issue with both debit and credit accounts");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static double querySingleAccount(final int id) {
+        try (Connection conn = DriverManager.getConnection(AccountsCRUD.DB_url)) {
+            String query = "select balance from accounts where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getDouble("balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private static void deleteAccountById() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the account id to be deleted: ");
+        int accountId = scanner.nextInt();
+        try (Connection conn = DriverManager.getConnection(AccountsCRUD.DB_url)) {
+            String deleteSQL = "delete from accounts where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(deleteSQL);
+            preparedStatement.setInt(1, accountId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 1) {
+                System.out.println("Deleted successfully");
+            } else {
+                System.out.println("Failed to delete");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void updateAccountBalance() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the account id to modify: ");
+        int accountId = scanner.nextInt();
+        System.out.print("Enter the new balance:");
+        double amount = scanner.nextDouble();
+        try (Connection conn = DriverManager.getConnection(AccountsCRUD.DB_url)) {
+            String updateSQL = "update accounts set balance=? where id=?";
+            PreparedStatement preparedStatement = conn.prepareStatement(updateSQL);
+            preparedStatement.setDouble(1, amount);
+            preparedStatement.setInt(2, accountId); // this 1 ,2 is for ?,?
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 1) {
+                System.out.println("Updated successfully");
+            } else {
+                System.out.println("Failed to update");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private static void createAccountWithStatement() {
+        // TODO Auto-generated method stub
+        try (Connection conn = DriverManager.getConnection(AccountsCRUD.DB_url)) {
+            String insertSQL = "insert into accounts (name, balance) values('abcnew', 70000)";
+            Statement statement = conn.createStatement();
+            int rowsAffected = statement.executeUpdate(insertSQL);
+            if (rowsAffected == 1) {
+                System.out.println("Inserted successfully");
+            } else {
+                System.out.println("Failed to insert");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createAccount() {
+        // TODO Auto-generated method stub
+        try (Connection conn = DriverManager.getConnection(AccountsCRUD.DB_url)) {
+            String insertSQL = "insert into accounts (name, balance) values(?, ?)";
+            PreparedStatement preparedStatement = conn.prepareStatement(insertSQL);
+            // we can use preparedStatement when we want to take input from the
+            // user and use it in a query
+            preparedStatement.setString(1, "abc");
+            preparedStatement.setDouble(2, 5000); // this 1 ,2 is for ?,?
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected == 1) {
+                System.out.println("Inserted successfully");
+            } else {
+                System.out.println("Failed to insert");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void queryAllAccounts() {
+        // TODO Auto-generated method stub
+        try (Connection connection = DriverManager.getConnection(AccountsCRUD.DB_url)) {
+            // System.out.println("Type of connection=" +
+            // connection.getClass().getName());
+            // System.out.println("AccountsCRUD.queryAllAccounts()");
+            String query = "select * from accounts";
+            Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet resultSet = statement.executeQuery(query); // only used
+                                                                 // when select
+                                                                 // statements
+            while (resultSet.next()) { // resultSet is a live Object
+                System.out.println("ID=" + resultSet.getInt("id"));
+                System.out.println("Name=" + resultSet.getString("name"));
+                System.out.println("Balance=" + resultSet.getDouble("balance")); // be
+                // careful
+                // about
+                // column
+                // indexing
+                // starting
+                // from
+                // 1
+                System.out.println("-----------------------------------");
+
+
+            }
+
+            resultSet.previous();
+            System.out.println("Prev id=" + resultSet.getInt(1));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+}

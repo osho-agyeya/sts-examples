@@ -1,0 +1,5 @@
+package com.repository.exceptions;
+
+public class AccountRepositoryException {
+
+}

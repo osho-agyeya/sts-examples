@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Accounts</title>
+</head>
+<body>
+
+<h2>Accounts</h2>
+
+<div id="accounts">
+</div>
+
+
+<script type="text/javascript">
+var xhr=new XMLHttpRequest();
+var url="http://localhost:9090/api/accounts";
+xhr.open("GET",url,true);
+xhr.onreadystatechange=onStateChange;
+xhr.send(null);
+
+function onStateChange(){
+	
+	if(xhr.readyState === 4 && xhr.status === 200){
+		
+		console.log(xhr.responseText);
+		var accounts = JSON.parse(xhr.responseText);
+		console.log(accounts);
+		for(var i=0; i< accounts.length; i++){
+			console.log("Id=",accounts[i].id);
+			console.log("Name=",accounts[i].name);
+			console.log("Balance=",accounts[i].balance);
+		}
+		
+	}
+	
+}
+</script>
+
+</body>
+</html>

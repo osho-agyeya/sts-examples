@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Date calculator</title>
+</head>
+<body>
+	
+	<form action="datecalculate" method="post">
+		<fieldset>
+			<p>Enter a Date
+				<input type="text" placeholder="Date" name="myDate" required/>
+			</p>
+			<p>Add(Month/Yr)
+				<select name="addMonth" required>
+    				<option value="1">1</option>
+					<option value="2">2</option>
+  				</select>			
+				<select name="addYear" required> 
+    				<option value="10">10</option>
+					<option value="20">20</option>
+  				</select>			
+			</p>
+			<div>
+				<button type="submit">Calculate</button>
+			</div>
+		</fieldset>
+	</form>
+
+</body>
+</html>

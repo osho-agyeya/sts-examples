@@ -1,0 +1,162 @@
+/*
+ * COPYRIGHT. HSBC HOLDINGS PLC 2019. ALL RIGHTS RESERVED.
+ *
+ * This software is only to be used for the purpose for which it has been
+ * provided. No part of it is to be reproduced, disassembled, transmitted,
+ * stored in a retrieval system nor translated in any human or computer
+ * language in any way or for any other purposes whatsoever without the prior
+ * written consent of HSBC Holdings plc.
+ */
+package com.io;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import com.types.Employee;
+
+
+class MyResource implements AutoCloseable {
+
+    public void open(final int x) throws Exception {
+        if (x < 100) {
+            System.out.println("MyResource.open():" + x);
+        } else {
+            throw new Exception("open failed");
+        }
+    }
+
+    public void close() throws Exception {
+        // TODO Auto-generated method stub
+        System.out.println("MyResource.close()");
+
+    }
+
+
+}
+
+
+public class FileDemo {
+
+    public static void readFromFile() /* throws IOException */ {
+        String data;
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("data.txt"));
+            do {
+                data = br.readLine();
+                if (data != null) {
+                    System.out.println(data);
+                }
+            } while (data != null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void writeToFile() /* throws IOException */ {
+
+        String data;
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        try {
+            br = new BufferedReader(new InputStreamReader(System.in));
+            bw = new BufferedWriter(new FileWriter("data.txt"));
+
+            data = br.readLine();
+            while (!data.equals("exit")) {
+                System.out.println("From console=" + data);
+                bw.write(data);
+                bw.newLine();
+                data = br.readLine();
+            }
+            bw.flush();
+            bw.close();
+            br.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+    }
+
+    public static void tryWithResources() {
+        try (MyResource resource = new MyResource()) {
+            resource.open(10);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            System.out.println("Exception:" + e.getMessage());
+        }
+    }
+
+    private static void readFromFileWithResources() {
+        // TODO Auto-generated method stub
+        try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+            String data = br.readLine();
+            while (data != null) {
+                System.out.println(data);
+                data = br.readLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private static void serialization() {
+        // TODO Auto-generated method stub
+        Employee employee = new Employee(1, "Anil", 70000);
+        try (FileOutputStream fos = new FileOutputStream("employees.dat"); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(employee);
+            System.out.println("Employee saved");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private static void deserialization() {
+        // TODO Auto-generated method stub
+        Employee employee = null;
+        try (FileInputStream fis = new FileInputStream("employees.dat"); ObjectInputStream ois = new ObjectInputStream(fis)) {
+            employee = (Employee) ois.readObject();
+            System.out.println("ID=" + employee.getId() + "\nName=" + employee.getName() + "\nSalary=" + employee.getSalary());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static void main(final String args[]) throws IOException {
+
+        //writeToFile();
+        // readFromFile();
+        // tryWithResources();
+        // readFromFileWithResources();
+       serialization(); // for writing objects
+       deserialization();// for reading objects
+
+
+    }
+
+
+}

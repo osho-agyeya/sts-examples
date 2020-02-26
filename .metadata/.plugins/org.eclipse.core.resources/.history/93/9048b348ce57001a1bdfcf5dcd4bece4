@@ -1,0 +1,5 @@
+package com.boot.controllers;
+
+public class HomeController {
+
+}

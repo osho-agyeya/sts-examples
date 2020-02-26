@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Random</title>
+</head>
+<body>
+
+	<h3>
+		Random number generated between
+		<%=request.getAttribute("min")%>
+		and
+		<%=request.getAttribute("max")%>:
+	</h3>
+	<h4>
+		Random:
+		<%=request.getAttribute("result")%></h4>
+
+	<form action="generate" method="post">
+		<p>
+			<input type="hidden" name="min" value="${min}">
+		</p>
+		<p>
+			<input type="hidden" name="max" value="${max}">
+		</p>
+		<div>
+			<button type="submit">Regenerate</button>
+		</div>
+	</form>
+	<div>
+	<p>Last Generated Numbers</p>
+	<c:forEach items="${numbers}" var="item">
+		<span>${item}</span> &nbsp;&nbsp;
+	
+	</c:forEach>
+	</div>
+
+</body>
+</html>

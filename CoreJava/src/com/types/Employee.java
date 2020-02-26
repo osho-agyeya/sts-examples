@@ -1,0 +1,88 @@
+package com.types;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class Employee implements Serializable, Comparable<Employee> {
+
+    private int id;
+    private String name;
+    private transient double salary;// don't serialize
+    private static int count = 0;
+
+    static {
+        System.out.println("In static block");
+        Employee.count = 100;
+    }
+
+    public Employee() {
+        System.out.println("Default constructor for employee");
+        Employee.count++;
+    }
+
+    public Employee(final int id, final String name, final double salary) {
+        System.out.println("Employee Constructor parameterized");
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        Employee.count++;
+    }
+
+    protected void finalize() throws Throwable {
+        System.out.println("in finalize");
+        Employee.count--;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(final int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public double getSalary() {
+        return this.salary;
+    }
+
+    public void setSalary(final double salary) {
+        this.salary = salary;
+    }
+
+    public static int getInstances() {
+        return Employee.count;
+    }
+
+
+    public boolean equals(final Object obj) {
+        if (this == obj) { // pointing to same reference
+            return true;
+        }
+        if (obj instanceof Employee) {
+            Employee emp = (Employee) obj;
+            return (emp.id == this.id && emp.name.equals(this.name) && emp.salary == this.salary);
+        } else {
+            return false;
+        }
+
+    }
+
+    public int hashCode() {
+        return Objects.hash(this.id, this.name, this.salary);
+    }
+
+    public int compareTo(final Employee emp) {
+        // TODO Auto-generated method stub
+        return this.id - emp.id;
+    }
+
+
+}

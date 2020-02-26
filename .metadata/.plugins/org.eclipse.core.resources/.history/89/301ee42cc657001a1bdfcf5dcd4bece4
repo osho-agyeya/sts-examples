@@ -1,0 +1,5 @@
+package com.aspects;
+
+public class LogAspect {
+
+}
