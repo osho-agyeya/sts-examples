@@ -1,0 +1,194 @@
+
+threads share the memory in the heap for the processes
+
+every thread will have its own stack(stack includes method calls)
+
+java.lang.thread
+
+every thread has identifier, name, priority, state
+
+2 ways, extend from thread class and override the run method ||| implement the interface runnable and override the run method
+
+sleep join and interrupt methods for threads
+
+sleep puts the current thread to sleep without consuming any processing time; it removes itself from active thread and the scheduler doesn't schedule it for next execution
+
+sleep is a static method;
+
+interrupt is one thread messaging another thread;instead of using exit function, we will interrupt, then the thread will receive the message and then do the required stuff
+
+join lets the thread wait for another thread to complete its execution
+
+states of thread; new, runnable, blocked(when there are locks in your application), terminated, timed waiting, waiting
+
+thread local=store data related to specific thread; used to store contact information like session or transaction
+
+java.util.concurrent
+
+overhead of starting and exiting the thread is decreased using thread pool
+
+executorService is also there
+
+if a static variable, then it goes to code section(like string a = "abc")
+
+if string a = new String("abc"); then object so stored on heap
+
+hashcode is also there:generating an integer related to equality of the class; if you override hash code; you have to override equals
+
+unequal objects can have same hashcode
+
+comparable sees natural ordering of objects;has compareTo methods
+
+comparator is custom ordering
+
+array is again reference; created on the heap
+
+java 1 has vector, hashtable, propoerties(key and value both strings)
+
+java 2 has collections
+
+java 5 has collections based on generics and concurrents
+
+set does not have any order
+
+linkedlist is double linked list
+
+hashset uses hashcode mechanism to check for duplicates
+
+treeset is a set based on natural ordering
+
+generics mean we can reuse the class for different types
+
+need to have url={ip addresses; port and protocol}; domain name gets mapped to ip address using dns resolving
+
+if you use database apis, then application is not portable
+
+we have to convert jdbc call to the respective oracle, mysql,,, for this we have drivers,,  jdbc is provided by java;; mysql and oracle will provide us with their own drivers
+
+type1, type2, type3, type4 drivers
+
+pure java drivers are purely written in java and are the fastest
+
+driver manager is the class that helps us pick an appropriate driver(specify the url that we want to communicate)
+
+protocol changes according to servers; connect is a method
+
+apache derby comes bundled with java; there is a db folder
+
+we can also create jar file for the draw app and then it can be made as a executable jar file
+
+jar file should be in the class path
+
+we use sql to communicate
+
+jsbc:represents connection; getMetaData; sql queries(Statements); manage transactions
+
+statement;prepared statement; callable statement;
+
+statement=without parameters
+
+prepared statement=faster and has parameters
+
+callable statement=invoke stored procedures(function with logic)
+
+result set is a table
+
+servlet->generic servlet->http servlet(if you are extending from http servlet, never override the service method)->myservlet
+
+generally get methods are used internally
+
+get appends the data to the url, post appends it to the request body, so post is used when we don't want to expose information
+
+generally the url is supposed to be hello and actual file is hello.jsp(mapped in xml) so that underlying technology is not exposed
+
+http is stateless. and every request is independent, so it loses database
+
+to prevent this-
+
+      --cookies are key value at client side(browser)
+
+      --http session is information stored on the server side(most important)
+
+      --hidden fields
+
+      --url rewriting
+
+jsp tags(conversion from .jsp to .java)
+  <%@  %>    =  directives define the behaviour of the page and the class to be generated(generally import statements)
+  <%!  %>    =  declaratives declare class and instance level members and functions; override jspinint and destroy
+  <%  %>     =  scriplet processed for every request; added into jspService method at compilation and we have to print semicolon
+  <%=  %>    =  expressions are processed for every request and emitted as html response into out.println() and we don't need to put a semi-colon
+
+types of cookies:persistent(stored to the file system; life is defined by age) and non persistent(default;just in temp memory; life is till browser open)
+
+subsequent cookies are sent again to the server
+
+static class the only restraint is that it should be an inner class
+
+java servlet are the main components of a web app
+
+jsp is presentation  and servlet is applications
+
+any ui has a design pattern known as mvc which is model, view and controller(introduced by small talk)
+
+swing is based on mvc; intent of design pattern is to not reinvent the wheel; another design pattern is singleton(only one instance of the class created); proxy is another design pattern; facade; factory design pattern; builder; prototype;
+
+mvc is not object oriented design pattern-it's main idea is segregation of concerns
+
+controller:handle request, validation, navigation, app/business logic, data access(servlet)
+
+model is an object that handles the state of the dal layer(these are basically objects)
+
+view is for presentation(jsp)
+
+jsp in webcontent, servlets in a servlet package, model in a model package
+
+200 is success;302 is object not found or object moved;404 not found
+
+assignment:make a footer
+
+implicit objects
+
+request: instance of httpservletrequest
+
+response: instance of httpservletresponse
+
+out: instance of printwriter
+
+generic servlet and http servlet
+
+servlet<-generic servlet<-httpservlet
+
+cookies or sessions rule: if client info is critical for application execution then store it as httpSession, otherwise use httpCookie
+
+jsp tags are directives, expression(generated as html), scriplet(plain java code, go to service method), declaratives
+
+jsp expression language can also be used by using {}
+
+jsp also has custom tags -tag class and tag library
+
+thymeleaf freemarker velocity-tools similar to jsp but faster
+
+jstl is standard tag library
+
+filters and listeners
+
+filters: dynamically interprets requests and responses to process the information. filter comes between the browser and web applet/servlet. we can have chain of filters
+
+listeners are used to track user movements
+
+servlet context is a global context listener
+
+logout, delete, addnew to be added
+
+java 8 was for functional programming, has the following:interfaces,lamba, streams, collecters, parallelism
+
+java 8 gives you the freedom to put two more methods in interface apart from abstract, one is default and other is static
+
+default is a method in interface that can have an implementation
+
+default methods can be used to add new methods to exisiting interface
+
+now a class can implement many interfaces, therefore multiple inheritance
+
+static methods are not abstract

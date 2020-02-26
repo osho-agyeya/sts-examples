@@ -1,0 +1,919 @@
+
+18/7/19----------------------------------
+java notes:
+
+general purpose programming language
+initially called oak then project green java was developed by james golsing,mike sheridan, and patrick naughton
+java 1.0 in 1995
+
+features: object oriented, simple robust and secure, automatic garbage collection, platform independent, architecture neutral, distrubuted, java library,
+
+open closed principle in programming :code should always be opened for extensions, should be closed for modifications(add a new class, no modification of existing class)
+
+to be done everytime for command prompt
+set path="C:\SWDTOOLS\JDK1.8.0_66\bin";%path%;
+
+always folder is com.types. something
+
+Package name is always lowercase
+
+object oriented features-object and classes; class is a blueprint;
+
+protected means same package and subclasses
+
+finalize is for cleanup;does not always run; gc will run only when there is memory problem;best way is to open and close manually
+
+generally you don't have to call gc
+
+systrace for sopln(constructor)
+
+fucntion overloading: early binding-the compiler decides which method to call during compilation
+funciton overriding: late binding-during runtime;
+
+all methods in java execute late binding;no compile time binding
+
+derived class reference can be applied to base class object
+
+if the method is private or virtual, then it cannot be inherited or overridden
+
+methods or classes can be abstract(when we don't knw what the implementation is)
+
+final variable is constant and value cannot be changed
+final method cannot be overridden
+final classes cannot be inherited
+
+
+interface is like an abstract class with all methods abstract. defining contracts and specifications
+a class can have only one base class, but implement as many interfaces
+
+we can have inner class in java
+
+outer class could either be public or default
+
+inner class can be declared as static, can have any access specifier, can access all members of the containing classes
+
+local classes are declared in a method, anonymous classes, can access only final parameters and final variables
+
+
+19/7/19-----------------------------------------
+
+anonymous classes are examples of local classes
+
+what is there on the heap has larger life than what is there on the stack
+
+in bin folder the dollar classes represent inner classes
+
+anonymous classes have no name
+
+"program against an interface", "never against an implementation":because interface is a contract which should never change
+
+reflection-runtime information of an object;runtime object creation
+
+exceptions
+
+checked exception from exception(try catch); unchecked exception from runtime exception(throws)
+
+an exception which does not mandate try catch is known as unchecked
+
+stack is created for exceptions also: stack unwinding
+
+file io/ input and output stream
+
+bytes-i/o stream
+characters-file writer/reader
+
+input is marked as abstract so that we can customize its applications according to where the data is being read from
+
+object into stream of bytes=serialization
+
+class has to be marked as serializable
+
+serialization uses reflection(runtime information/ but reflection is a slow process)
+
+marker interface : interface which does not have any methods
+
+keywords are not inherited by derived classes; interfaces will get inherited
+
+interfaces generally have final/constant members
+
+default behaviour: all members of the class get serialized to stream; access specifier don't affect the serialization behaviour;
+
+if we don't want certain members, we can use transient keyword. only non transient members are serializable; transient members are neither written nor read
+
+need for custom serialization: base class not marked as serializable, data members not serializable, encryption of data;
+
+how to do custom serialization ? override methods writeobject and readobject and provide necessary information ; implement externalizable
+
+enumerator is only for legacy collections, iterator is for old and new
+
+22/7/19--------------------------------------
+
+custom serialization
+
+no we will try to save the shapes drawn to a file(save and load button)
+
+try with resources for autoclosing
+
+process has its own set of applications; correspond to running jvm
+
+thread are lightweight processes that live within a process and share resources with the other thread of the processes
+
+threads live within the same jvm
+
+java 1 collections, vector , hashtable, properties are synchronised, ;;;;java 2 collections are non  synchronized
+
+jvm creates a thread and then instructs os to create an os level thread
+
+threads share the memory in the heap for the processes
+
+every thread will have its own stack(stack includes method calls)
+
+java.lang.thread
+
+every thread has identifier, name, priority, state
+
+2 ways, extend from thread class and override the run method ||| implement the interface runnable and override the run method
+
+sleep join and interrupt methods for threads
+
+sleep puts the current thread to sleep without consuming any processing time; it removes itself from active thread and the scheduler doesn't schedule it for next execution
+
+sleep is a static method;
+
+interrupt is one thread messaging another thread;instead of using exit function, we will interrupt, then the thread will receive the message and then do the required stuff
+
+join lets the thread wait for another thread to complete its execution
+
+states of thread; new, runnable, blocked(when there are locks in your application), terminated, timed waiting, waiting
+
+thread local=store data related to specific thread; used to store contact information like session or transaction
+
+java.util.concurrent
+
+overhead of starting and exiting the thread is decreased using thread pool
+
+executorService is also there
+
+concurrency issues---
+synchronize keyword to create a lock on an object
+if syunchronised then thread safe;
+
+wait and notify for object monitors;based on what came first and the priority
+
+there is a lock queue and a wait queue
+
+threads go into wait queue becuase the values aren't sufficient for completion
+
+notify then releases one thread for release queue
+
+notifyAll releases all threads
+
+notify and notify all cause threads to go from wait queue to lock queue
+
+23/7---------------------------------------
+
+callable function declaration == t call();
+
+only one thread can get access to synchronized block
+
+object equals and hashcode
+
+if a static variable, then it goes to code section(like string a = "abc")
+
+if string a = new String("abc"); then object so stored on heap
+
+hashcode is also there:generating an integer related to equality of the class; if you override hash code; you have to override equals
+
+unequal objects can have same hashcode
+
+comparable sees natural ordering of objects;has compareTo methods
+
+comparator is custom ordering
+
+array is again reference; created on the heap
+
+java 1 has vector, hashtable, propoerties(key and value both strings)
+
+java 2 has collections
+
+java 5 has collections based on generics and concurrents
+
+set does not have any order
+
+linkedlist is double linked list
+
+hashset uses hashcode mechanism to check for duplicates
+
+treeset is a set based on natural ordering
+
+generics mean we can reuse the class for different types
+
+public T add(T x, T y){
+return x+y
+}add<int>(a,b)
+
+generics have stronger type checks at compile time
+
+autoboxing is there for Integer and int
+
+classes and interfaces can be generic
+
+hashset is faster than treeset, it can hold null objects, it stores in random order,
+
+-------------------------------------
+
+24/7/19
+
+jdbc is interface for connecting java to relational databases
+
+crud operations we can run
+
+java.sql and javax.sql
+
+we need to have url={ip addresses; port and protocol}; domain name gets mapped to ip address using dns resolving
+
+if you use database apis, then application is not portable
+
+we have to convert jdbc call to the respective oracle, mysql,,, for this we have drivers,,  jdbc is provided by java;; mysql and oracle will provide us with their own drivers
+
+type1, type2, type3, type4 drivers
+
+pure java drivers are purely written in java and are the fastest
+
+driver manager is the class that helps us pick an appropriate driver(specify the url that we want to communicate)
+
+protocol changes according to servers; connect is a method
+
+apache derby comes bundled with java; there is a db folder
+
+we can also create jar file for the draw app and then it can be made as a executable jar file
+
+jar file should be in the class path
+
+we use sql to communicate
+
+jsbc:represents connection; getMetaData; sql queries(Statements); manage transactions
+
+statement;prepared statement; callable statement;
+
+statement=without parameters
+
+prepared statement=faster and has parameters
+
+callable statement=invoke stored procedures(function with logic)
+
+result set is a table
+
+liveObject
+
+the driver is implementing the connection interface
+
+except for drivermanager(which is a class) everything is an interface in jdbc
+
+segregation of responsibilities(concerns)
+
+25/7--------------------------------------------------
+
+Portable means we can change the database
+
+batch processing means large number of records
+
+till now core java********************************
+
+java is both a programming language  and a platform(environment for running the applications)
+
+java se; java ee(enterprise)=web server,web services(apache tomcat,oracle glassfish(application server and web server),websphere, weblogic, jboss),rest and soap apis,application server, enterprise java beans, enterprise apis, ; java me(mobile); java fx(for flash and silverlight)
+
+servlets
+
+dynamic content -- cgi, asp, servlets, jsp, asp.net, php
+
+when we have servlets, we define an interface because it is an interface
+
+javax.servlet.Servlet provides servlet interface--init, service(ServletRequest, ServletRespone){//used for servicing single request from client}, destroy, getServletConfig, getServletInfo
+
+context root is name of application; content directory is where all files are places
+
+servlet life cycle-servlet class->initializing and loading->calling the init method->servicing requests by calling the service method->destroying the servlet by calling the destroy method->garbage collection
+
+built over servlets are java server pages(jsp) = here jsp takes the work of presentation logic and servlets take remaining logic
+
+jsp has javaservlet;javabeans;jdbc
+
+in jsp we can use java code along with html; jsp is an extension of html;
+
+jsp are used for segregation of presentation logic from application logic
+
+any presentation is jsp, any validation is servlet,
+
+dynamic html generation is there then jsp
+
+servlet->generic servlet->http servlet(if you are extending from http servlet, never override the service method)->myservlet
+
+generally get methods are used internally
+
+get appends the data to the url, post appends it to the request body, so post is used when we don't want to expose information
+
+generally the url is supposed to be hello and actual file is hello.jsp(mapped in xml) so that underlying technology is not exposed
+
+http is stateless. and every request is independent, so it loses database
+
+to prevent this-
+
+      --cookies are key value at client side(browser)
+
+      --http session is information stored on the server side(most important)
+
+      --hidden fields
+
+      --url rewriting
+
+jsp tags(conversion from .jsp to .java)
+  <%@  %>    =  directives define the behaviour of the page and the class to be generated(generally import statements)
+  <%!  %>    =  declaratives declare class and instance level members and functions; override jspinint and destroy
+  <%  %>     =  scriplet processed for every request; added into jspService method at compilation and we have to print semicolon
+  <%=  %>    =  expressions are processed for every request and emitted as html response into out.println() and we don't need to put a semi-colon
+
+types of cookies:persistent(stored to the file system; life is defined by age) and non persistent(default;just in temp memory; life is till browser open)
+
+subsequent cookies are sent again to the server
+
+static class the only restraint is that it should be an inner class
+
+26/7-----------------------------------
+
+java servlet are the main components of a web app
+
+jsp is presentation  and servlet is applications
+
+any ui has a design pattern known as mvc which is model, view and controller(introduced by small talk)
+
+swing is based on mvc; intent of design pattern is to not reinvent the wheel; another design pattern is singleton(only one instance of the class created); proxy is another design pattern; facade; factory design pattern; builder; prototype;
+
+mvc is not object oriented design pattern-it's main idea is segregation of concerns
+
+controller:handle request, validation, navigation, app/business logic, data access(servlet)
+
+model is an object that handles the state of the dal layer(these are basically objects)
+
+view is for presentation(jsp)
+
+jsp in webcontent, servlets in a servlet package, model in a model package
+
+200 is success;302 is object not found or object moved;404 not found
+
+assignment:make a footer
+
+implicit objects
+
+request: instance of httpservletrequest
+
+response: instance of httpservletresponse
+
+out: instance of printwriter
+
+session: httpsession
+
+and many other implicit objects like application, config, page, pageContext, exception
+
+velocity and thymeleaf are templating technologies
+
+5/8/19 -----------------------------------------------------
+
+conversational data
+
+http is a stateless protocol, hence there is no way of storing information
+
+cookie is key value pair on client side
+
+persistent and non persistent cookie
+
+request has headers(key value pairs) and body
+
+now on the server we will have a servlet or a jsp will have response(again key and value)
+
+in java 1, there was enumeration  and now it is an iterator
+
+
+sessions allow storage on server side, this information is available on all web pages,
+
+the adavantage of session is that since it is on server, therefore it is more secure
+
+sessions allow us to store complex java object
+
+we can also specify a timeout for sessions to invalidate it
+
+6/8/19---------------------------------------
+
+in sessions, the data is on the server and it stays there till the user kills the information
+
+opening new windows means new sessions. it will store data separately
+
+look up data- sometimes users address is also stored. suppose same users in the place. so this data is known as lookup data
+
+servlet container or web container
+
+servlet:request-response
+
+generic servlet and http servlet
+
+servlet<-generic servlet<-httpservlet
+
+cookies or sessions rule: if client info is critical for application execution then store it as httpSession, otherwise use httpCookie
+
+jsp tags are directives, expression(generated as html), scriplet(plain java code, go to service method), declaratives
+
+jsp expression language can also be used by using {}
+
+jsp also has custom tags -tag class and tag library
+
+thymeleaf freemarker velocity-tools similar to jsp but faster
+
+jstl is standard tag library
+
+filters and listeners
+
+filters: dynamically interprets requests and responses to process the information. filter comes between the browser and web applet/servlet. we can have chain of filters
+
+listeners are used to track user movements
+
+servlet context is a global context listener
+
+logout, delete, addnew to be added
+
+java 8 was for functional programming, has the following:interfaces,lamba, streams, collecters, parallelism
+
+java 8 gives you the freedom to put two more methods in interface apart from abstract, one is default and other is static
+
+default is a method in interface that can have an implementation
+
+default methods can be used to add new methods to exisiting interface
+
+now a class can implement many interfaces, therefore multiple inheritance
+
+static methods are not abstract
+
+marker interface has no method:serializable, remote
+
+some interfaces have only one method, they are called single abstract method(now called functional interface, it can have multiple default methods):Runnable, comparable
+
+lambda is possible only because of functional interface
+
+7/8/19--------------------------------------
+
+
+
+8/8/19--------------------------
+
+optional is for defining data members that might not have initialized by the user but then we are not sure, so we can say Optional.empty
+
+authentication means identifying the users
+
+once authenticated, then we have to check what all he can access, this means authorisation
+
+spring is a java framework, other examples are hibernate, log4j, ibatis, hessain
+
+oop principles: open closed principles, segregation of concerns
+
+there are various design patterns-written previously in notes also
+
+standalone application does not need any container or server to run
+
+container instantiates the components and their life cycle
+
+ioc means inversion of control
+
+loosely coupled:changes in one layer should not affect other layer
+
+aop: aspect oriented programming
+
+spring also provides data access framework: it is mvc which is defacto standard
+
+spring boot is the one which we will be looking at
+
+java beans:class must be public, declared in a package, public default constructor(optimal), has properties(getter and setter),serializable(optional)
+
+pojo means plain old java object, servlet is not pojo
+
+component scan is other thing so that all the beans are scanned
+
+spring jdbc is data framework
+
+spring provides us with a container(referred to as spring beans)
+two type of containers: bean factory, application context
+
+Class class is a part of reflection. it is the superclass
+initially, we were doing configuration using xml, now we are doing using annotation
+
+inversion of control:don't call us, we'll call you;dependency injection;defines how dependencies or object graphs are created; ioc is a principle that is used to wire an application together; the container decides the depedencies that need to be made;main aim is loose coupling
+
+      |---------------------------------|
+person->controller->service->repository |
+      |---------------------------------|
+
+the box is the container
+
+controller is ui, service is business layer,
+
+di decides which object of repository gets injected into service and which object of service gets injected into controller
+
+suppose i want to change from one implementation to another implementation, then we want to do it in such a way that the service is not to be changed.
+
+loosely coupled means changes in one place cause changes in other parts also
+
+dependency can be injected through a property or through a constructor
+
+autowired is for dependency injection, it can be applied only to one constructor, resolves the dependency by type(looks for a class that implements that interface), autowired first tries by type, if fail then by name
+
+dependency by name: the name of the property should match the id of the bean
+
+qualifier resolves it by name
+
+there are three modes:dev, test, prod
+
+profile annotation is a component that is eligible for registration when one or more specified roles are active
+
+beans scope decide how long beans remain in the memory
+--singleton(only one  instance created)
+--prototype(instance created on bean request)
+--requests
+--session
+
+default bean scope is singleton
+
+component scan scans the package and the classes in the package get configured
+
+there are two ways: one is xml and other is annotation
+
+we don't have to write init, and destroy in spring for most pojos since spring allows us to give our own names to our functions
+
+
+9/8/19---------------------------------------------
+
+lifecycle methods(by successive versions of spring): implement interface intializaingBean and Disposable Bean; provide custom initialization and cleanup methods; use the annotation @postconstruct and @preDestroy
+
+component scan is for registering the beans
+
+two types of injections: property and contructor
+
+spring jdbc-makes it easier
+
+? is known as positional parameters
+ in jdbc, we can replace ? with :id, :salary
+
+ simple jdbc call is used like callable for invoking stored procedure
+
+ spring mvc built over servlet specification
+
+ controller-handle action
+
+ model-represents the state
+
+view - presentation of what is inside model
+
+if the controller is pojo, it cannot be handled by controller, so we have a front controller(Servlet) to do this job
+
+we can have many controllers but only one front controller
+
+handler mapping and handler adapter is used to map the urls to the controller
+
+spring tx is for transaction
+
+DispatcherServlet is the front controller-dispatches the requests
+
+jstl is jsp tag library
+
+form->controller->repository(we pass a product object to repository)->jdbc template->data source->database//homework
+
+we have to use xml based application
+
+
+12/8-----------------------------------------------------------------
+
+advantage of orm is that you don't have to write jdbc statements
+
+dispatcher servlet is the front controller
+
+generally in mvc service layer is not there
+
+proxy is a representative of the logic
+
+gof:gang of 4 design pattern:proxy,
+
+{for test:
+  features:
+  types of containers:spring bean components:register, scopes and lifecycles
+  component scan
+  ioc
+  mvc:fc,c,m,v,vr,hm
+}
+
+aspect oriented programming
+
+presentation layer, business logic, dal layer
+[security]
+[transaction]
+[logging]
+
+aop helps in injecting behaviours(for example, logproxy creates logs and can call create,update of repositoryimpl). we are not injecting complete object, we are  only injecting the behaviour
+
+-aspect is unit of modularity that we are building
+
+-join point: methods, constructors,  (where on an object should aspect be applied)
+
+-point cut: on which objects aspect should be applied
+
+-advice: the set of instructions to execute an aspect(types are before, after, around)
+
+13/8--------------------------------
+
+weaving-how to apply the advice
+
+proxy is one mechanism of weaving(::compile, load, runtime)
+
+--compile time: spring does not support
+--load time:custom class loader
+--runtime(proxy)
+
+//pojo is plain old java object
+
+spring-lightweight enterprise framework
+
+spring boot provides a radically faster and widely accessible getting started---now new topic
+
+opinionated framework
+
+embedded web server makes application portable and easy to deploy on the cloud
+
+maven or gradle
+
+annotation based configuration
+
+whatever we can do with spring, we can do with spring boot but not vice versa
+
+spring cli, allows groovy, java, kotlin, very less boilerplate code
+
+we can also use initializr
+
+sts has a plugin for spring boot
+
+based on the values in pom.xml, it decides whether web app or not
+
+web services: some business logic exposed on the internet, not dependent on platform in which it has been written
+
+interoperability is ensured by using protocols and industry standards
+
+w3c standard
+
+two types of web services: soap and rest(mid 2000)
+
+rest:representational state transfer is a style of architecture, describes how networked resources are defined and addressed
+
+principles of rest: client server, cacheable, stateless, uniform interface, layered, code on demand
+
+while implementing rest, not necessary to follow all principles(but always client server)
+
+server work is to expose the functionality, client is supposed to invoke the information,
+
+server should not maintain any state with respect to the client, if client asks server, the request has all the piece of information, the server should never hold any information about the client, there is no session state on the server, the session state is stored on client side completely
+
+client, server and other components can cache info for better performance
+
+uniform interface means all clients communicating with the server should have the same manner of communication
+
+layered system means the server can be layered, the client is agnostic as to how many layers
+
+code on demand: the client can request for code from the server
+
+resource: anything that has a unique url, multiple represents
+
+rest is always based on http
+
+postman,browser plugins. rest Client plugins
+
+swagger tool
+
+fetch a resource-get
+
+post- make a new resources
+
+put-update the resource
+
+delete-delete the resource
+
+14/8----------------------------------------------------------------------------------------------------------
+
+springboot-autoconfiguration
+
+network level protocols:tcp, udp, ip
+
+application level protocol:ftp
+
+100-information
+200-success
+300-redirect
+400-client error
+500-server error
+
+object to xml = marshalling and vice versa
+
+jax-b provides apis for marshalling and unmarshalling
+
+content negotiation means interacting with server for the manner in which info is to be shared
+
+response-accept
+
+request - content-type
+
+https://community.global.hsbc/sites/engpractices/Development%20Cookbook/npm.aspx
+
+jackson is for json marshalling and unmarshalling
+
+first we had client server architecture; then 3/n tier architecture(all layers have to be of same technology, business and presentation logic different); then service oriented architecture( we can develop on different technologies. here we create different services and expose them(we build either soap or rest services));
+
+in monolithic services, all services are encapsulated in one single system
+
+in microservices, each service is created separately there are many systems(cloud was a main reason for the creation of microservices)
+
+components are independent software units which can be replaced and updated
+
+services are outdated because they use web service requests
+
+for components, we have to develop from start to end,
+
+earlier, project was made by some team  and maintained by another team
+
+now, product is made and maintained by same team
+
+one services communicates with another using rest protocols
+
+esb= enterprise service bus
+
+microservices can be built by teams with devops experience(continuous delivery and continuous integration)
+
+design for failure
+
+there is a configuration server which hold the properties for all the microservices
+
+registration service is the one with which all the micro services are registered
+
+spring cloud is used for writing microservices
+
+netflixtools -eureka: REST based service that is primarily for locating microservices;;zuul:load balancer;; hystrix:fault tolerance and latency tolerance
+
+
+19/8-----------------------------------------------
+
+node.js server side scripting
+
+chrome browser using google v8 javascript engine
+
+node.js used for creating scalable applications-operates on a single thread;using non-blocking i/o calls
+
+asynchronous io framework(non blocking, event driven io)
+
+node package manager, also libuv
+
+node.js is interpreted language, there is no main method, it starts executing
+
+every node application has a global object
+
+global-browser-window;global-nodejs-global
+
+scopes in javascript:global, function, block(it is a challenge, there is no block scope)
+
+hoisting means all declarations are pushed to the top
+
+let and const to use block scope
+
+lexical scope is also there
+
+every thing is a module in javascript
+
+package.json is like pom.xml
+
+npm install package -g =============for global
+
+production dependencies and development dependencies[needed only during development --save-dev]
+
+nodemon-node monitor
+
+express is a high level api taking care of running the node.js app
+
+20/8-----------------------------------------------------------------------------------
+
+node.js libraries
+
+file io, http, os, net, cluster, crypto, express, lodash
+
+require: resolving, loading, wrapping, evaluating, caching,
+
+require first looks for js, then json, then folder
+
+if we mention only require("abc"), then it will search for abc in node-modules
+
+node supports asynchronous programming, sychronous programming means line by line, in asyn:it executes the function in background and continues execution
+
+asyn programming in java is done via multi threading
+
+timer library for asynchronous programming
+
+single thread makes coding easier
+
+we can still create concurrent applications
+
+angular is client side(browser) framework
+
+brendon coded livescript;then sun and livescript combined to javascript
+
+javascript was standardised by ecma and then ecmascript
+
+javascript challenges:browser inconsistency,global variables error prone, no concept of namespaces(packages),
+to handle challenges:library, design patterns, don't use javascript(typescript, coffeescript, dart(these all generate javascript files))
+
+dom manipulation across browsers is taken care of by jquery
+
+in angular we use typescript
+
+typescript support types(developed by microsoft)
+
+typescript is transcompilation(source code to source code)
+
+typescript is superset of javascript
+
+decorations are like annotations in java
+
+default(one) and named(*) export/import
+
+angular provides data binding
+
+gmail was first single page application
+
+angular 1 means angular.js
+angular 2 means angular
+
+faster rendering engine
+
+faster change detector
+
+webpack is a bundler: combine all js into one js file
+
+now we have angular module
+
+in angular, configuration is always annotation
+
+component-any reusable ui widget
+
+here, bootstrap means starter code, not twitter bootstrap
+
+spec.ts is unit testing code
+
+modularity is about loose coupling/modules are like container
+
+angular is only presentation layer
+
+data binding is about updating the data in the form from client side,updating data between view and component class
+
+directive is used for dom manipulation(this means dynamically generating html)
+
+pipe is used for data transformation
+
+service is @Injectable
+
+interpolation and property binding(square brackets) are one way binding, and then comes event binding and 2way binding
+
+dry run: only tell what files it will generate
+
+jasmin in unit testing tool in angular
+
+structural directive is ngif, ngfor
+
+router means to travel between various views(components)
+
+https://en.wikipedia.org/w/api.php?action=opensearch&format=json&origin=*&search=anil
+
+contructor, binding,oninit
+
+change the url in the angular app so that we can change the request to our url,,change this.url=""
+
+angular libraries
+
+python has int, float
+
+
+self.name is public
+self.__name is private
+self._name is protected  //anywhere within the package
+
+method is a class function and function is any functions
+-instance methods-itself
+-static methods-@staticmethod
+-class methos-@classmethod
+
+class Class was used in reflection
+
+--model(folder)->package
+  --Employee.py(file)->module
+    --class Employee->type
+
+------------------------------------------------------------
